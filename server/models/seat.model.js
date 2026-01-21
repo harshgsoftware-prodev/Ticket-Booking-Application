@@ -1,30 +1,35 @@
-const {Schema, model } = require('mongoose')
+const { Schema, model } = require("mongoose");
 
 const seatSchema = new Schema(
     {
-        seatId: {
-            type: String, 
+        tripId: {
+            type: Schema.Types.ObjectId,
             required: true,
-            unique: true,
+            index: true,
+        },
+
+        seatNumber: {
+            type: String,
+            required: true,
         },
 
         status: {
             type: String,
-            enum: ['AVAILABLE', 'LOCKED', 'CONFIRMED'],
-            default: 'AVAILABLE'
+            enum: ["AVAILABLE", "LOCKED", "CONFIRMED"],
+            default: "AVAILABLE",
+            index: true,
         },
 
         lockedBy: {
-            type: String
+            type: Schema.Types.ObjectId,
+            ref: "User",
         },
 
         lockedExpiresAt: {
             type: Date,
-        }
-    }, 
-    { timestamps: true }
-)
+        },
+    },
+    { timestamps: true },
+);
 
-module.exports = model('Seat', seatSchema)
-
-
+module.exports = model("Seat", seatSchema);

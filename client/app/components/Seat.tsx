@@ -1,35 +1,46 @@
 "use client";
 
 import { Button } from "@radix-ui/themes";
-import { Seat as SeatType } from "../types/seat";
+import api from "../lib/api";
+import Timer from "./Timer";
 
-interface SeatProps {
-    seat: SeatType;
-    onClick: () => void;
-}
+export default function Seat({ seat, refresh }: any) {
+    const lockSeat = async () => {
+        await api.post("/seats/lock", { seatId: seat._id });
+        refresh();
+    };
 
-export default function Seat({ seat, onClick }: SeatProps) {
+    const confirmSeat = async () => {
+        await api.post("/seats/confirm", { seatId: seat._id });
+        refresh();
+    };
+
     const disabled = seat.status !== "AVAILABLE";
 
-    const background =
-        seat.status === "CONFIRMED"
-            ? "#9ca3af"
-            : seat.status === "LOCKED"
-              ? "#fde047"
-              : "#4ade80";
+    let color = "#22c55e";
+    if (seat.status === "LOCKED") color = "#facc15";
+    if (seat.status === "CONFIRMED") color = "#ef4444";
 
     return (
-        <Button
-            disabled={disabled}
-            onClick={onClick}
-            style={{
-                padding: 12,
-                background,
-                borderRadius: 6,
-                cursor: disabled ? "not-allowed" : "pointer",
-            }}
-        >
-            {seat.seatId}
-        </Button>
+        <div style={{ textAlign: "center" }}>
+            <Button
+                disabled={disabled}
+                onClick={lockSeat}
+                style={{
+                    padding: 12,
+                    backgroundColor: color,
+                    borderRadius: 6,
+                    cursor: disabled ? "not-allowed" : "pointer",
+                }}
+            >
+                {seat.seatNumber}
+            </Button>
+            {seat.status === "LOCKED" && (
+                <>
+                    <Timer expiresAt={seat.lockedExpiresAt} />
+                    <Button onClick={confirmSeat}>Confirm</Button>
+                </>
+            )}
+        </div>
     );
 }

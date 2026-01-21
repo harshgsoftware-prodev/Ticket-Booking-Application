@@ -1,10 +1,15 @@
-import SeatGrid from "./components/SeatGrid";
+"use client";
 
-export default function Home() {
+import Link from "next/link";
+
+export default function HomePage() {
     return (
-        <main style={{ padding: 40 }}>
-            <h1>Ticket Booking Application</h1>
-            <SeatGrid />
-        </main>
+        <div style={{ padding: 40 }}>
+            <h1>Ticket Booking Demo</h1>
+
+            <Link href="/register">Register</Link>
+            <br />
+            <Link href="/login">Login</Link>
+        </div>
     );
 }

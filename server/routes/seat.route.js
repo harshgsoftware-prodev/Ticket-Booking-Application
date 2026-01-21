@@ -1,21 +1,20 @@
-const express = require('express')
+const express = require("express");
 
-const {lockSeat, confirmSeat, getSeats} = require('../controllers/seat.controller')
+const {
+    lockSeat,
+    confirmSeat,
+    getSeats,
+} = require("../controllers/seat.controller");
+const authMiddleware = require("../middleware/auth.middleware");
 
-const router = express.Router()
+const router = express.Router();
 
-router.get('/test', () => {
-    console.log('it is workig');
-    
-})
+router.get("/test", () => {
+    console.log("it is workig");
+});
 
-//get All seat
-router.get('/seats', getSeats)
+router.get("/", getSeats);
+router.post("/lock", authMiddleware, lockSeat);
+router.post("/confirm", authMiddleware, confirmSeat);
 
-//lock seat
-router.post('/lock-seat', lockSeat)
-
-//confirm seat
-router.post('/cofirm-seat', confirmSeat)
-
-module.exports = router
+module.exports = router;
