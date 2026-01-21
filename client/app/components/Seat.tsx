@@ -3,6 +3,7 @@
 import { Button } from "@radix-ui/themes";
 import api from "../lib/api";
 import Timer from "./Timer";
+import { getCurrentUserId } from "../lib/auth";
 
 export default function Seat({ seat, refresh }: any) {
     const lockSeat = async () => {
@@ -15,10 +16,19 @@ export default function Seat({ seat, refresh }: any) {
         refresh();
     };
 
-    const disabled = seat.status !== "AVAILABLE";
+    const currentUserId = getCurrentUserId();
+
+    const isLockedByMe =
+        seat.status === "LOCKED" && seat.lockedBy === currentUserId;
+
+    const isLockedByOther =
+        seat.status === "LOCKED" && seat.lockedBy !== currentUserId;
+
+    const disabled = seat.status === "CONFIRMED" || isLockedByOther;
 
     let color = "#22c55e";
-    if (seat.status === "LOCKED") color = "#facc15";
+    if (isLockedByMe) color = "#facc15";
+    if (isLockedByOther) color = "#9ca3af";
     if (seat.status === "CONFIRMED") color = "#ef4444";
 
     return (
@@ -35,7 +45,7 @@ export default function Seat({ seat, refresh }: any) {
             >
                 {seat.seatNumber}
             </Button>
-            {seat.status === "LOCKED" && (
+            {isLockedByMe && (
                 <>
                     <Timer expiresAt={seat.lockedExpiresAt} />
                     <Button onClick={confirmSeat}>Confirm</Button>

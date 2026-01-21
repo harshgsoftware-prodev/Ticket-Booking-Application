@@ -5,3 +5,7 @@ export const saveToken = (token: string) => {
 export const isLoggedIn = () => {
     return !!localStorage.getItem("token");
 };
+
+export const getCurrentUserId = () => {
+    return JSON.parse(atob(localStorage.getItem("token")!.split(".")[1])).id;
+};
