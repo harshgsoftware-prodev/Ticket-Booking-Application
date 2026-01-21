@@ -35,6 +35,11 @@ export default function RegisterPage() {
         }
     };
 
+    const handleSumbit = (e: React.FormEvent) => {
+        e.preventDefault();
+        register();
+    };
+
     return (
         <Flex
             align="center"
@@ -42,52 +47,54 @@ export default function RegisterPage() {
             style={{ minHeight: "100vh", background: "#f9fafb" }}
         >
             <Card size="4" style={{ width: 360 }}>
-                <Flex direction="column" gap="4">
-                    <Heading align="center">Create Account</Heading>
+                <form onSubmit={handleSumbit}>
+                    <Flex direction="column" gap="4">
+                        <Heading align="center">Create Account</Heading>
 
-                    <Text size="2" color="gray" align="center">
-                        Register to book seats
-                    </Text>
-
-                    <Flex direction="column" gap="3">
-                        <TextField.Root
-                            placeholder="Name"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                        />
-
-                        <TextField.Root
-                            placeholder="Email"
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
-
-                        <TextField.Root
-                            placeholder="Password"
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
-                    </Flex>
-
-                    <Button size="3" onClick={register} disabled={loading}>
-                        {loading ? "Creating account..." : "Register"}
-                    </Button>
-
-                    {error && (
-                        <Text size="2" color="red" align="center">
-                            {error}
+                        <Text size="2" color="gray" align="center">
+                            Register to book seats
                         </Text>
-                    )}
 
-                    <Text size="2" align="center" color="gray">
-                        Already have an account?{" "}
-                        <a href="/login" style={{ color: "blue" }}>
-                            Login
-                        </a>
-                    </Text>
-                </Flex>
+                        <Flex direction="column" gap="3">
+                            <TextField.Root
+                                placeholder="Name"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                            />
+
+                            <TextField.Root
+                                placeholder="Email"
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
+
+                            <TextField.Root
+                                placeholder="Password"
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
+                        </Flex>
+
+                        <Button size="3" disabled={loading}>
+                            {loading ? "Creating account..." : "Register"}
+                        </Button>
+
+                        {error && (
+                            <Text size="2" color="red" align="center">
+                                {error}
+                            </Text>
+                        )}
+
+                        <Text size="2" align="center" color="gray">
+                            Already have an account?{" "}
+                            <a href="/login" style={{ color: "blue" }}>
+                                Login
+                            </a>
+                        </Text>
+                    </Flex>
+                </form>
             </Card>
         </Flex>
     );

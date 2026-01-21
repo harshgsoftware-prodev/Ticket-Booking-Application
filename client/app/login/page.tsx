@@ -33,6 +33,11 @@ export default function LoginPage() {
         }
     };
 
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        login();
+    };
+
     return (
         <Flex
             align="center"
@@ -40,46 +45,48 @@ export default function LoginPage() {
             style={{ minHeight: "100vh", background: "#f9fafb" }}
         >
             <Card size="4" style={{ width: 360 }}>
-                <Flex direction="column" gap="4">
-                    <Heading align="center">Login</Heading>
+                <form onSubmit={handleSubmit}>
+                    <Flex direction="column" gap="4">
+                        <Heading align="center">Login</Heading>
 
-                    <Text size="2" color="gray" align="center">
-                        Sign in to continue booking
-                    </Text>
-
-                    <Flex direction="column" gap="3">
-                        <TextField.Root
-                            placeholder="Email"
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
-
-                        <TextField.Root
-                            placeholder="Password"
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
-                    </Flex>
-
-                    <Button size="3" onClick={login} disabled={loading}>
-                        {loading ? "Logging in..." : "Login"}
-                    </Button>
-
-                    {error && (
-                        <Text size="2" color="red" align="center">
-                            {error}
+                        <Text size="2" color="gray" align="center">
+                            Sign in to continue booking
                         </Text>
-                    )}
 
-                    <Text size="2" align="center" color="gray">
-                        Don't have an account?{" "}
-                        <a href="/register" style={{ color: "blue" }}>
-                            Register
-                        </a>
-                    </Text>
-                </Flex>
+                        <Flex direction="column" gap="3">
+                            <TextField.Root
+                                placeholder="Email"
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
+
+                            <TextField.Root
+                                placeholder="Password"
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
+                        </Flex>
+
+                        <Button size="3" onClick={login} disabled={loading}>
+                            {loading ? "Logging in..." : "Login"}
+                        </Button>
+
+                        {error && (
+                            <Text size="2" color="red" align="center">
+                                {error}
+                            </Text>
+                        )}
+
+                        <Text size="2" align="center" color="gray">
+                            Don't have an account?{" "}
+                            <a href="/register" style={{ color: "blue" }}>
+                                Register
+                            </a>
+                        </Text>
+                    </Flex>
+                </form>
             </Card>
         </Flex>
     );
