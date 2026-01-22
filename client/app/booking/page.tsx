@@ -12,7 +12,7 @@ export default function page() {
 
     const router = useRouter();
 
-    const tripId = "65a123456789000000000001"; // demo
+    const tripId = "6970c2fd23620a523bba82fb"; // demo
 
     const fetchSeats = async () => {
         const res = await api.get(`/seats?tripId=${tripId}`);

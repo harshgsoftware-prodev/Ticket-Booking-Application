@@ -25,6 +25,11 @@ const seatSchema = new Schema(
             ref: "User",
         },
 
+        confirmedBy: {
+            type: Schema.Types.ObjectId,
+            ref: "User",
+        },
+
         lockedExpiresAt: {
             type: Date,
         },

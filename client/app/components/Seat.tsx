@@ -16,6 +16,11 @@ export default function Seat({ seat, refresh }: any) {
         refresh();
     };
 
+    const cancelSeat = async () => {
+        await api.post("/seats/cancel", { seatId: seat._id });
+        refresh();
+    };
+
     const currentUserId = getCurrentUserId();
 
     const isLockedByMe =
@@ -23,6 +28,9 @@ export default function Seat({ seat, refresh }: any) {
 
     const isLockedByOther =
         seat.status === "LOCKED" && seat.lockedBy !== currentUserId;
+
+    const isConfirmByMe =
+        seat.status === "CONFIRMED" && seat.confirmedBy === currentUserId;
 
     const disabled = seat.status === "CONFIRMED" || isLockedByOther;
 
@@ -50,6 +58,12 @@ export default function Seat({ seat, refresh }: any) {
                     <Timer expiresAt={seat.lockedExpiresAt} />
                     <Button onClick={confirmSeat}>Confirm</Button>
                 </>
+            )}
+
+            {isConfirmByMe && (
+                <Button color="red" variant="soft" onClick={cancelSeat}>
+                    Cancel
+                </Button>
             )}
         </div>
     );

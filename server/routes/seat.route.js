@@ -4,6 +4,7 @@ const {
     lockSeat,
     confirmSeat,
     getSeats,
+    cancelSeat,
 } = require("../controllers/seat.controller");
 const authMiddleware = require("../middleware/auth.middleware");
 
@@ -16,5 +17,6 @@ router.get("/test", () => {
 router.get("/", getSeats);
 router.post("/lock", authMiddleware, lockSeat);
 router.post("/confirm", authMiddleware, confirmSeat);
+router.post("/cancel", authMiddleware, cancelSeat);
 
 module.exports = router;

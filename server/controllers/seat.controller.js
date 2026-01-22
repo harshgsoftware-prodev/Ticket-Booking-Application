@@ -68,6 +68,7 @@ const confirmSeat = async (req, res) => {
         },
         {
             status: "CONFIRMED",
+            confirmedBy: userId,
             lockedBy: null,
             lockedExpiresAt: null,
         },
@@ -81,8 +82,37 @@ const confirmSeat = async (req, res) => {
     return res.status(200).json(seat);
 };
 
+//cancel seat
+const cancelSeat = async (req, res) => {
+    const { seatId } = req.body;
+    const userId = req.user.id;
+
+    const seat = await Seat.findOneAndUpdate(
+        {
+            _id: seatId,
+            status: "CONFIRMED",
+            confirmedBy: userId,
+        },
+
+        {
+            status: "AVAILABLE",
+            confirmedBy: null,
+        },
+        { new: true },
+    );
+
+    if (!seat) {
+        return res.status(403).json({
+            message: "You don't have rights to cancel this seat.",
+        });
+    }
+
+    return res.status(200).json(seat);
+};
+
 module.exports = {
     getSeats,
     lockSeat,
     confirmSeat,
+    cancelSeat,
 };
