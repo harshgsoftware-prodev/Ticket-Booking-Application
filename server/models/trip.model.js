@@ -4,6 +4,10 @@ const tripSchema = new mongoose.Schema({
     source: String,
     destination: String,
     date: Date,
+    vehicleType: {
+        type: String,
+        default: "Bus",
+    },
     vehicleNumber: String,
 });
 

@@ -84,7 +84,7 @@ export default function SeatGrid({ seats, refresh }: any) {
                 <div
                     style={{
                         display: "grid",
-                        gridTemplateColumns: "repeat(6, 1fr)",
+                        gridTemplateColumns: "repeat(5, 1fr)",
                         gap: 12,
                         maxWidth: 420,
                         width: "100%",
