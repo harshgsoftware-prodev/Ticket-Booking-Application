@@ -20,12 +20,19 @@ export default function Seat({ seat, refresh, onSelect }: any) {
         isLockedByOther ||
         (seat.status === "CONFIRMED" && seat.confirmedBy !== currentUserId);
 
-    const lockSeat = async () => {
-        if (seat.status !== "AVAILABLE") return;
+    const onSeatClick = async () => {
+        if (seat.status === "AVAILABLE") {
+            await api.post("/seats/lock", { seatId: seat._id });
+            onSelect(seat);
+            refresh();
+            return;
+        }
 
-        await api.post("/seats/lock", { seatId: seat._id });
-        onSelect(seat);
-        refresh();
+        if (seat.status === "CONFIRMED" && seat.confirmedBy === currentUserId) {
+            await api.post("/seats/cancel", { seatId: seat._id });
+            refresh();
+            return;
+        }
     };
 
     let color = "#22c55e";
@@ -36,7 +43,7 @@ export default function Seat({ seat, refresh, onSelect }: any) {
     return (
         <Button
             disabled={disabled}
-            onClick={lockSeat}
+            onClick={onSeatClick}
             style={{
                 padding: 12,
                 backgroundColor: color,
