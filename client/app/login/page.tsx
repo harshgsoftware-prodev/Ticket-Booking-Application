@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import api from "../lib/api";
-import { saveToken } from "../lib/auth";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-
 import { Button, Card, Flex, Heading, Text, TextField } from "@radix-ui/themes";
+
+import api from "../lib/api";
+import { getToken, saveToken } from "../lib/auth";
 
 export default function LoginPage() {
     const [email, setEmail] = useState("");
@@ -37,6 +37,12 @@ export default function LoginPage() {
         e.preventDefault();
         login();
     };
+
+    useEffect(() => {
+        if (getToken()) {
+            router.replace("/trips");
+        }
+    }, []);
 
     return (
         <Flex

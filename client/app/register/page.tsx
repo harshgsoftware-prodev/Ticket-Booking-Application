@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import api from "../lib/api";
+import { useEffect, useState } from "react";
+import { Button, Card, Flex, Heading, Text, TextField } from "@radix-ui/themes";
 import { useRouter } from "next/navigation";
 
-import { Button, Card, Flex, Heading, Text, TextField } from "@radix-ui/themes";
+import api from "../lib/api";
+import { getToken } from "../lib/auth";
 
 export default function RegisterPage() {
     const [name, setName] = useState("");
@@ -39,6 +40,12 @@ export default function RegisterPage() {
         e.preventDefault();
         register();
     };
+
+    useEffect(() => {
+        if (getToken()) {
+            router.replace("/trips");
+        }
+    }, []);
 
     return (
         <Flex

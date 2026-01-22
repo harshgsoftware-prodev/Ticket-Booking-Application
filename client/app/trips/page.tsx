@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import TopBar from "../components/Topbar";
 import { Card, Text, Flex, Heading, Badge, Separator } from "@radix-ui/themes";
+import { getToken } from "../lib/auth";
 
 export default function page() {
     const [trips, setTrips] = useState<any[]>([]);
@@ -13,6 +14,13 @@ export default function page() {
     useEffect(() => {
         api.get("/trips").then((res) => setTrips(res.data));
     });
+
+    useEffect(() => {
+        if (!getToken()) {
+            router.replace("/login");
+        }
+    }, []);
+
     return (
         <div style={{ padding: 40 }}>
             <TopBar />
