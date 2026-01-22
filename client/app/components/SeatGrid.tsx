@@ -69,46 +69,64 @@ export default function SeatGrid({ seats, refresh }: any) {
 
     return (
         <>
-            {/* SEAT */}
             <div
                 style={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(6, 1fr)",
-                    gap: 12,
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    minHeight: "70vh",
+                    width: "100%",
+                    gap: 16,
                 }}
             >
-                {seats.map((seat: any) => (
-                    <Seat
-                        key={seat._id}
-                        seat={seat}
-                        refresh={refresh}
-                        onSelect={onSeatSelect}
-                    />
-                ))}
-            </div>
-
-            {/* TIMER  */}
-            {myLockedSeats.length > 0 && expiresAt && (
-                <Timer
-                    expiresAt={expiresAt}
-                    onExpire={() => {
-                        refresh();
+                {/* SEAT GRID */}
+                <div
+                    style={{
+                        display: "grid",
+                        gridTemplateColumns: "repeat(6, 1fr)",
+                        gap: 12,
+                        maxWidth: 420,
+                        width: "100%",
                     }}
-                />
-            )}
+                >
+                    {seats.map((seat: any) => (
+                        <Seat
+                            key={seat._id}
+                            seat={seat}
+                            refresh={refresh}
+                            onSelect={onSeatSelect}
+                        />
+                    ))}
+                </div>
 
-            {/* Confirm & Cancel */}
-            <div style={{ marginTop: 16, display: "flex", gap: 12 }}>
-                {myLockedSeats.length > 0 && (
-                    <Button color="green" onClick={confirmSeats}>
-                        Confirm {myLockedSeats.length} Seats
-                    </Button>
+                {/* TIMER */}
+                {myLockedSeats.length > 0 && expiresAt && (
+                    <Timer
+                        expiresAt={expiresAt}
+                        onExpire={() => {
+                            refresh();
+                        }}
+                    />
                 )}
-                {myConfirmedSeats.length > 0 && (
-                    <Button color="red" variant="soft" onClick={cancelSeats}>
-                        Cancel {myConfirmedSeats.length} Seats
-                    </Button>
-                )}
+
+                {/* CONFIRM / CANCEL */}
+                <div style={{ display: "flex", gap: 12 }}>
+                    {myLockedSeats.length > 0 && (
+                        <Button color="green" onClick={confirmSeats}>
+                            Confirm {myLockedSeats.length} Seats
+                        </Button>
+                    )}
+                    {myConfirmedSeats.length > 0 && (
+                        <Button
+                            color="red"
+                            variant="soft"
+                            onClick={cancelSeats}
+                        >
+                            Cancel {myConfirmedSeats.length} Seats
+                        </Button>
+                    )}
+                </div>
             </div>
         </>
     );

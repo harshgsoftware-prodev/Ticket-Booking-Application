@@ -4,25 +4,58 @@ const LOCK_DURATION_MS = 0.5 * 60 * 1000; //30 second
 
 //get all seats
 const getSeats = async (req, res) => {
-    const { tripId } = req.query;
-
-    const now = new Date();
-
     await Seat.updateMany(
         {
-            tripId,
             status: "LOCKED",
-            lockedExpiresAt: { $lte: now },
+            lockedExpiresAt: { $lt: new Date() },
         },
         {
-            status: "AVAILABLE",
-            lockedBy: null,
-            lockedExpiresAt: null,
+            $set: {
+                status: "AVAILABLE",
+                lockedBy: null,
+                lockedExpiresAt: null,
+            },
         },
     );
 
-    const seats = await Seat.find({ tripId }).lean();
+    const seats = await Seat.find().lean();
     return res.status(200).json(seats);
+};
+
+//get seat by trip
+const getSeatsByTrip = async (req, res) => {
+    try {
+        const { tripId } = req.params;
+
+        if (!tripId && !mongoose.Types.ObjectId.isValid(tripId)) {
+            return res.status(400).json({ message: "Invalid tripId" });
+        }
+
+        await Seat.updateMany(
+            {
+                tripId,
+                status: "LOCKED",
+                lockedExpiresAt: { $lt: new Date() },
+            },
+            {
+                $set: {
+                    status: "AVAILABLE",
+                    lockedBy: null,
+                    lockedExpiresAt: null,
+                },
+            },
+        );
+
+        const seats = await Seat.find({ tripId })
+            .sort({ seatNumber: 1 })
+            .lean();
+
+        res.json(seats);
+    } catch (err) {
+        res.status(500).json({
+            message: "Fail to fetch seats",
+        });
+    }
 };
 
 //lock seat
@@ -184,6 +217,7 @@ const cancelMultipleSeats = async (req, res) => {
     });
 };
 
+// cancel current user seats
 const cancelMyLockedSeats = async (req, res) => {
     const userId = req.user.id;
 
@@ -208,6 +242,7 @@ const cancelMyLockedSeats = async (req, res) => {
 
 module.exports = {
     getSeats,
+    getSeatsByTrip,
     lockSeat,
     confirmSeat,
     cancelSeat,

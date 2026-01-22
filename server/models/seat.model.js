@@ -4,7 +4,7 @@ const seatSchema = new Schema(
     {
         tripId: {
             type: Schema.Types.ObjectId,
-            required: true,
+            ref: "Trip",
             index: true,
         },
 

@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { Button, Flex, Heading, Text, Separator } from "@radix-ui/themes";
+import { Button, Flex, Heading, Text } from "@radix-ui/themes";
+import { getToken } from "./lib/auth";
 
 export default function HomePage() {
     return (
@@ -33,13 +34,21 @@ export default function HomePage() {
                 </Text>
 
                 <Flex gap="4" mt="4">
-                    <Button size="4" asChild>
-                        <Link href="/register">Get Started</Link>
-                    </Button>
+                    {getToken() ? (
+                        <Button size="4" variant="solid" asChild>
+                            <Link href="/trips">Dashboard</Link>
+                        </Button>
+                    ) : (
+                        <>
+                            <Button size="4" asChild>
+                                <Link href="/register">Get Started</Link>
+                            </Button>
 
-                    <Button size="4" variant="soft" asChild>
-                        <Link href="/login">Login</Link>
-                    </Button>
+                            <Button size="4" variant="soft" asChild>
+                                <Link href="/login">Login</Link>
+                            </Button>
+                        </>
+                    )}
                 </Flex>
             </Flex>
         </Flex>

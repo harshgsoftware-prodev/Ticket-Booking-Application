@@ -1,21 +1,23 @@
 "use client";
 
-import api from "../lib/api";
-import SeatGrid from "../components/SeatGrid";
+import api from "../../lib/api";
+import SeatGrid from "../../components/SeatGrid";
 import { useEffect, useState } from "react";
-import TopBar from "../components/Topbar";
-import { getToken } from "../lib/auth";
-import { useRouter } from "next/navigation";
+import TopBar from "../../components/Topbar";
+import { getToken } from "../../lib/auth";
+import { useParams, useRouter } from "next/navigation";
 
 export default function page() {
     const [seats, setSeats] = useState([]);
 
     const router = useRouter();
+    const params = useParams();
 
-    const tripId = "6970c2fd23620a523bba82fb"; // demo
+    const tripId = params.tripId as string;
 
     const fetchSeats = async () => {
-        const res = await api.get(`/seats?tripId=${tripId}`);
+        if (!tripId) return;
+        const res = await api.get(`/seats/${tripId}`);
         setSeats(res.data);
     };
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { Badge, Flex } from "@radix-ui/themes";
 import api from "../lib/api";
 
 export default function Timer({ expiresAt, onExpire }: any) {
@@ -22,5 +23,14 @@ export default function Timer({ expiresAt, onExpire }: any) {
 
         return () => clearInterval(interval);
     }, [expiresAt]);
-    return <div style={{ fontSize: 12 }}>{time}s</div>;
+
+    const color = time <= 10 ? "red" : time <= 20 ? "amber" : "green";
+
+    return (
+        <Flex direction="column" align="center" gap="2" style={{ width: 220 }}>
+            <Badge color={color} size="2">
+                ⏳ {time}s remaining
+            </Badge>
+        </Flex>
+    );
 }

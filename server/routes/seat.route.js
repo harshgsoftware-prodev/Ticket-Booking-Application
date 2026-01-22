@@ -4,6 +4,7 @@ const {
     lockSeat,
     confirmSeat,
     getSeats,
+    getSeatsByTrip,
     cancelSeat,
     confirmMultipleSeats,
     cancelMultipleSeats,
@@ -13,11 +14,9 @@ const authMiddleware = require("../middleware/auth.middleware");
 
 const router = express.Router();
 
-router.get("/test", () => {
-    console.log("it is workig");
-});
-
 router.get("/", getSeats);
+router.get("/:tripId", getSeatsByTrip);
+
 router.post("/lock", authMiddleware, lockSeat);
 router.post("/confirm", authMiddleware, confirmSeat);
 router.post("/cancel", authMiddleware, cancelSeat);
