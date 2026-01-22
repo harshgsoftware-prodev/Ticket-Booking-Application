@@ -6,6 +6,10 @@
 
 - Temporary seat locking with expiry timer
 
+- Multiple seat can select, lock, confirm and cancel
+
+- Single seat can cancel by click on that particular seat
+
 - Only lock owner can confirm booking
 
 - Automatic release of expired locks
@@ -26,16 +30,29 @@
 
 - Other users cannot confirm or override locked seats
 
+- User who confirm seat can cancel it
+
 ### Demo
 
-Seat Booking UI
-![image](./ss/image1.png)
-
 Dashboard
-![image](./ss/image2.png)
+![alt text](./ss/dashboard.png)
 
 Login
-![image](./ss/image3.png)
+![image](./ss/login.png)
 
 Register
-![image](./ss/image4.png)
+![image](./ss/register.png)
+
+Trip
+![imag](./ss/trip.png)
+
+Seat
+![image](./ss/seat.png)
+
+Seat Selection
+
+Before 30 sec
+![image](./ss/seatSelection1.png)
+
+After 30 sec
+![image](./ss/seatSelection2.png)
