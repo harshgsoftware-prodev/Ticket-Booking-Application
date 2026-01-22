@@ -40,8 +40,16 @@ export default function Seat({ seat, refresh, onSelect }: any) {
     if (isLockedByOther) color = "#9ca3af";
     if (seat.status === "CONFIRMED") color = "#ef4444";
 
+    const title =
+        seat.status === "AVAILABLE"
+            ? "Click to select"
+            : seat.status === "CONFIRMED" && isConfirmByMe
+              ? "Click to cancel"
+              : "Unavailable";
+
     return (
         <Button
+            title={title}
             disabled={disabled}
             onClick={onSeatClick}
             style={{
