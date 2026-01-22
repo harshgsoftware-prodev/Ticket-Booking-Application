@@ -8,6 +8,7 @@ const cors = require("cors");
 const seatRoute = require("./routes/seat.route");
 const authRoute = require("./routes/auth.route");
 const tripRoute = require("./routes/trip.route");
+const userRouter = require("./routes/user.model");
 
 const app = express();
 const port = process.env.PORT;
@@ -18,6 +19,7 @@ app.use(cors());
 app.use("/api/seats", seatRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/trips", tripRoute);
+app.use("/api/users", userRouter);
 
 connectDB().then(() => {
     app.listen(port, () => {

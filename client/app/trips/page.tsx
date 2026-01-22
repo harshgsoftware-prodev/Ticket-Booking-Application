@@ -14,7 +14,7 @@ export default function page() {
         api.get("/trips").then((res) => setTrips(res.data));
     });
     return (
-        <Flex direction="column" style={{ minHeight: "100vh" }}>
+        <div style={{ padding: 40 }}>
             <TopBar />
             <Flex
                 direction="column"
@@ -86,6 +86,6 @@ export default function page() {
                     ))}
                 </Flex>
             </Flex>
-        </Flex>
+        </div>
     );
 }
