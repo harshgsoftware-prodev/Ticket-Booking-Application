@@ -1,14 +1,23 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import api from "../lib/api";
 
-export default function Timer({ expiresAt }: any) {
+export default function Timer({ expiresAt, onExpire }: any) {
     const [time, setTime] = useState(0);
+    const expiredRef = useRef(false);
 
     useEffect(() => {
-        const interval = setInterval(() => {
+        const interval = setInterval(async () => {
             const diff = new Date(expiresAt).getTime() - Date.now();
-            setTime(Math.max(0, Math.floor(diff / 1000)));
+            const seconds = Math.max(0, Math.floor(diff / 1000));
+            setTime(seconds);
+
+            if (seconds === 0 && !expiredRef.current) {
+                expiredRef.current = true;
+                await api.post("/seats/cancel-my-locked");
+                onExpire?.();
+            }
         }, 1000);
 
         return () => clearInterval(interval);
