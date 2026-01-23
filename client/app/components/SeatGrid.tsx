@@ -1,13 +1,20 @@
 import { useState, useMemo, useEffect } from "react";
 import { Button } from "@radix-ui/themes";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+
 import api from "../lib/api";
 import Timer from "./Timer";
 import Seat from "./Seat";
 import { getCurrentUserId } from "../lib/auth";
+import Payment from "./Payment";
+
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_PUBLISHABLE_STRIPE!);
 
 export default function SeatGrid({ seats, refresh }: any) {
     const currentUserId = getCurrentUserId();
     const [selectedSeats, setSelectedSeats] = useState<any[]>([]);
+    const [isPaying, setIsPaying] = useState(false);
 
     useEffect(() => {
         return () => {
@@ -51,12 +58,16 @@ export default function SeatGrid({ seats, refresh }: any) {
         });
     };
 
-    const confirmSeats = async () => {
-        await api.post("/seats/confirm-multiple", {
-            seatIds: myLockedSeats.map((s: any) => s._id),
-        });
-        setSelectedSeats([]);
-        refresh();
+    // const confirmSeats = async () => {
+    //     await api.post("/seats/confirm-multiple", {
+    //         seatIds: myLockedSeats.map((s: any) => s._id),
+    //     });
+    //     setSelectedSeats([]);
+    //     refresh();
+    // };
+
+    const confirmSeats = () => {
+        setIsPaying(true);
     };
 
     const cancelSeats = async () => {
@@ -107,17 +118,18 @@ export default function SeatGrid({ seats, refresh }: any) {
                         onExpire={() => {
                             refresh();
                         }}
+                        pause={isPaying}
                     />
                 )}
 
                 {/* CONFIRM / CANCEL */}
                 <div style={{ display: "flex", gap: 12 }}>
-                    {myLockedSeats.length > 0 && (
+                    {myLockedSeats.length > 0 && !isPaying && (
                         <Button color="green" onClick={confirmSeats}>
                             Confirm {myLockedSeats.length} Seats
                         </Button>
                     )}
-                    {myConfirmedSeats.length > 0 && (
+                    {/* {myConfirmedSeats.length > 0 && (
                         <Button
                             color="red"
                             variant="soft"
@@ -125,8 +137,24 @@ export default function SeatGrid({ seats, refresh }: any) {
                         >
                             Cancel {myConfirmedSeats.length} Seats
                         </Button>
-                    )}
+                    )} */}
                 </div>
+
+                {/* Payment Card */}
+                {isPaying && (
+                    <Elements stripe={stripePromise}>
+                        <Payment
+                            myLockSeats={myLockedSeats}
+                            onSuccess={() => {
+                                setIsPaying(false);
+                                refresh();
+                            }}
+                            onFail={() => {
+                                setIsPaying(false);
+                            }}
+                        />
+                    </Elements>
+                )}
             </div>
         </>
     );

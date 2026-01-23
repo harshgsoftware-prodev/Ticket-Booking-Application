@@ -9,6 +9,7 @@ const seatRoute = require("./routes/seat.route");
 const authRoute = require("./routes/auth.route");
 const tripRoute = require("./routes/trip.route");
 const userRouter = require("./routes/user.model");
+const paymentRouter = require("./routes/payment.route");
 
 const app = express();
 const port = process.env.PORT;
@@ -20,6 +21,7 @@ app.use("/api/seats", seatRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/trips", tripRoute);
 app.use("/api/users", userRouter);
+app.use("/api/payment", paymentRouter);
 
 connectDB().then(() => {
     app.listen(port, () => {

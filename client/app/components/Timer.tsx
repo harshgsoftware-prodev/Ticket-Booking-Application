@@ -4,11 +4,15 @@ import { useEffect, useRef, useState } from "react";
 import { Badge, Flex } from "@radix-ui/themes";
 import api from "../lib/api";
 
-export default function Timer({ expiresAt, onExpire }: any) {
+export default function Timer({ expiresAt, onExpire, pause = false }: any) {
     const [time, setTime] = useState(0);
     const expiredRef = useRef(false);
 
+    // console.log(pause);
+
     useEffect(() => {
+        if (pause) return;
+
         const interval = setInterval(async () => {
             const diff = new Date(expiresAt).getTime() - Date.now();
             const seconds = Math.max(0, Math.floor(diff / 1000));
@@ -22,7 +26,7 @@ export default function Timer({ expiresAt, onExpire }: any) {
         }, 1000);
 
         return () => clearInterval(interval);
-    }, [expiresAt]);
+    }, [expiresAt, pause]);
 
     const color = time <= 10 ? "red" : time <= 20 ? "amber" : "green";
 

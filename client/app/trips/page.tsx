@@ -1,10 +1,11 @@
 "use client";
 
-import api from "../lib/api";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import TopBar from "../components/Topbar";
 import { Card, Text, Flex, Heading, Badge, Separator } from "@radix-ui/themes";
+
+import api from "../lib/api";
+import TopBar from "../components/Topbar";
 import { getToken } from "../lib/auth";
 
 export default function page() {
@@ -24,6 +25,7 @@ export default function page() {
     return (
         <div style={{ padding: 40 }}>
             <TopBar />
+
             <Flex
                 direction="column"
                 gap="6"

@@ -240,6 +240,34 @@ const cancelMyLockedSeats = async (req, res) => {
     });
 };
 
+// cancel LOCKED seat
+const cancelLockedSeat = async (req, res) => {
+    const { seatId } = req.body;
+    const userId = req.user.id;
+
+    const seat = await Seat.findOneAndUpdate(
+        {
+            _id: seatId,
+            status: "LOCKED",
+            lockedBy: userId,
+        },
+        {
+            status: "AVAILABLE",
+            lockedBy: null,
+            lockedExpiresAt: null,
+        },
+        { new: true },
+    );
+
+    if (!seat) {
+        return res.status(403).json({
+            message: "Cannot cancel this seat",
+        });
+    }
+
+    res.status(200).json(seat);
+};
+
 module.exports = {
     getSeats,
     getSeatsByTrip,
@@ -249,4 +277,5 @@ module.exports = {
     confirmMultipleSeats,
     cancelMultipleSeats,
     cancelMyLockedSeats,
+    cancelLockedSeat,
 };

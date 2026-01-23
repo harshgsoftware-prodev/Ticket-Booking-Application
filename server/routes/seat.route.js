@@ -9,6 +9,7 @@ const {
     confirmMultipleSeats,
     cancelMultipleSeats,
     cancelMyLockedSeats,
+    cancelLockedSeat,
 } = require("../controllers/seat.controller");
 const authMiddleware = require("../middleware/auth.middleware");
 
@@ -24,5 +25,6 @@ router.post("/cancel", authMiddleware, cancelSeat);
 router.post("/confirm-multiple", authMiddleware, confirmMultipleSeats);
 router.post("/cancel-multiple", authMiddleware, cancelMultipleSeats);
 router.post("/cancel-my-locked", authMiddleware, cancelMyLockedSeats);
+router.post("/cancel-locked", authMiddleware, cancelLockedSeat);
 
 module.exports = router;

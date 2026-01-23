@@ -28,11 +28,18 @@ export default function Seat({ seat, refresh, onSelect }: any) {
             return;
         }
 
-        if (seat.status === "CONFIRMED" && seat.confirmedBy === currentUserId) {
-            await api.post("/seats/cancel", { seatId: seat._id });
+        if (seat.status === "LOCKED") {
+            await api.post("/seats/cancel-locked", { seatId: seat._id });
+            onSelect(seat);
             refresh();
             return;
         }
+
+        // if (seat.status === "CONFIRMED" && seat.confirmedBy === currentUserId) {
+        //     await api.post("/seats/cancel", { seatId: seat._id });
+        //     refresh();
+        //     return;
+        // }
     };
 
     let color = "#22c55e";

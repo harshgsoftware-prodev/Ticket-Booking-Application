@@ -8,6 +8,12 @@ const seatSchema = new Schema(
             index: true,
         },
 
+        paymentId: {
+            type: Schema.Types.ObjectId,
+            ref: "Payment",
+            index: true,
+        },
+
         seatNumber: {
             type: String,
             required: true,
