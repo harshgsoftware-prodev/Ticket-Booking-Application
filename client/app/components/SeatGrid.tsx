@@ -129,7 +129,7 @@ export default function SeatGrid({ seats, refresh }: any) {
                             Confirm {myLockedSeats.length} Seats
                         </Button>
                     )}
-                    {/* {myConfirmedSeats.length > 0 && (
+                    {myConfirmedSeats.length > 0 && (
                         <Button
                             color="red"
                             variant="soft"
@@ -137,7 +137,7 @@ export default function SeatGrid({ seats, refresh }: any) {
                         >
                             Cancel {myConfirmedSeats.length} Seats
                         </Button>
-                    )} */}
+                    )}
                 </div>
 
                 {/* Payment Card */}

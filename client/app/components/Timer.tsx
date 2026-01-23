@@ -8,11 +8,7 @@ export default function Timer({ expiresAt, onExpire, pause = false }: any) {
     const [time, setTime] = useState(0);
     const expiredRef = useRef(false);
 
-    // console.log(pause);
-
     useEffect(() => {
-        if (pause) return;
-
         const interval = setInterval(async () => {
             const diff = new Date(expiresAt).getTime() - Date.now();
             const seconds = Math.max(0, Math.floor(diff / 1000));
